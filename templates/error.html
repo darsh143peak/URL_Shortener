@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Error</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: "Quicksand", sans-serif;
+            background: #0f0f0f;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: white;
+        }
+
+        .box {
+            background: #111;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 0 40px rgba(255,0,0,0.3);
+        }
+
+        h2 {
+            color: #ff4d4d;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            color: #00ffff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <h2>❌ Error</h2>
+    <p>{{ message }}</p>
+
+    <a href="/">🔙 Go Back</a>
+</div>
+
+</body>
+</html>

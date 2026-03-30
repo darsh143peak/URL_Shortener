@@ -1,21 +1,126 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>URL Shortener</title>
+    <title>Smart URL Shortener</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: "Quicksand", sans-serif;
+            background: #0f0f0f;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 🔥 Top bar */
+        .topbar {
+            display: flex;
+            justify-content: flex-end;
+            padding: 15px 30px;
+        }
+
+        .topbar a {
+            color: #00ffff;
+            text-decoration: none;
+            font-size: 1.1em;
+        }
+
+        /* 🔥 Center container */
+        .main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 450px;
+            padding: 40px;
+            background: #111;
+            border-radius: 20px;
+            box-shadow: 0 0 40px rgba(0,255,255,0.2);
+            text-align: center;
+        }
+
+        h1 {
+            color: #fff;
+            margin-bottom: 30px;
+            font-size: 2.2em;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 30px;
+            border: 2px solid #00ffff;
+            background: transparent;
+            color: white;
+            font-size: 1.1em;
+            outline: none;
+        }
+
+        input::placeholder {
+            color: rgba(255,255,255,0.6);
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 30px;
+            border: none;
+            background: linear-gradient(45deg, #00ffff, #ff00ff);
+            color: black;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px #00ffff;
+        }
+
+        .link {
+            margin-top: 20px;
+        }
+
+        .link a {
+            color: #00ffff;
+            text-decoration: none;
+            font-size: 1.1em;
+        }
+    </style>
 </head>
+
 <body>
 
-<h2>Shorten URL</h2>
+<!-- 🔐 Top Right Login -->
+<div class="topbar">
+    <a href="/login">🔐 Login</a>
+</div>
 
-<form action="/shorten" method="POST">
-    <input type="text" name="url" placeholder="Enter URL" required><br><br>
+<!-- 🔥 Center Content -->
+<div class="main">
+    <div class="container">
+        <h1>🔗 URL Shortener</h1>
 
-    <input type="number" name="expiry" placeholder="Expiry (minutes optional)"><br><br>
+        <form action="/shorten" method="POST">
+            <input type="text" name="url" placeholder="Enter URL" required>
+            <input type="number" name="expiry" placeholder="Expiry (minutes)">
+            <input type="text" name="custom" placeholder="Custom short code">
 
-    <input type="text" name="custom" placeholder="Custom short code (optional)"><br><br>
+            <button type="submit">Shorten 🚀</button>
+        </form>
 
-    <button type="submit">Shorten</button>
-</form>
+        <div class="link">
+            <a href="/dashboard">📊 View Dashboard</a>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>

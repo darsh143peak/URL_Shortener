@@ -4,7 +4,21 @@ from models import db,URL
 import string, random
 from datetime import datetime, timedelta
 from flask import render_template
+from flask import session
+app = Flask(__name__)
+app.secret_key = "blaze_secret"
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        email = request.form.get("email")
 
+        if not email or not email.endswith("@bmsce.ac.in"):
+            return "Only BMSCE users allowed ❌"
+
+        session['user'] = email   
+        return redirect('/') 
+
+    return render_template('login.html')
 def generate_short_code(length=6):
     chars = string.ascii_letters + string.digits
     while True:
@@ -14,7 +28,6 @@ def generate_short_code(length=6):
         if not URL.query.filter_by(short_code=short_code).first():
             return short_code
 
-app = Flask(__name__)
 
 # 🔗 Database configuration
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
@@ -25,31 +38,40 @@ db.init_app(app)
 
 @app.route('/')
 def home():
+    if 'user' not in session:
+        return redirect('/login')
     return render_template('index.html')
 
 @app.route('/shorten', methods=['POST'])
 def shorten_url():
     original_url = request.form.get('url')
-    if not original_url.startswith("http://") and not original_url.startswith("https://"):
-        original_url = "http://" + original_url
     expiry = request.form.get('expiry')
 
-    if not original_url:
-        return "Invalid URL"
+    # 🔥 URL validation
+    if not original_url or "." not in original_url:
+        return render_template('error.html', message="Invalid URL ❌")
+
+    # 🔥 Fix missing http
+    if not original_url.startswith("http://") and not original_url.startswith("https://"):
+        original_url = "http://" + original_url
 
     custom = request.form.get('custom')
 
     if custom:
-        # check if already exists
         existing = URL.query.filter_by(short_code=custom).first()
         if existing:
-            return "Custom URL already taken ❌"
+            return render_template('error.html', message="Custom URL already taken ❌")
         short_code = custom
     else:
         short_code = generate_short_code()
+
+    # 🔥 expiry safe handling
     expires_at = None
     if expiry:
-        expires_at = datetime.utcnow() + timedelta(minutes=int(expiry))
+        try:
+            expires_at = datetime.utcnow() + timedelta(minutes=int(expiry))
+        except:
+            return render_template('error.html', message="Invalid expiry value ❌")
 
     new_url = URL(
         original_url=original_url,
@@ -77,9 +99,10 @@ def redirect_url(short_code):
     db.session.commit()
 
     return redirect(url.original_url)
-
 @app.route('/dashboard')
 def dashboard():
+    if 'user' not in session:
+        return redirect('/login')
     urls = URL.query.all()
     return render_template('dashboard.html', urls=urls)
 
@@ -87,6 +110,6 @@ def dashboard():
 with app.app_context():
     db.create_all()
 
-
-    if __name__ == '__main__':
-        app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 5000)))
+# ✅ OUTSIDE
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 5000)))
