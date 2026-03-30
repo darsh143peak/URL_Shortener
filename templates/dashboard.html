@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+
+<h1 class="text-3xl font-bold mb-6 text-center">📊 URL Dashboard</h1>
+
+<div class="overflow-x-auto">
+<table class="min-w-full bg-white shadow-md rounded-lg">
+    <thead class="bg-gray-200">
+        <tr>
+            <th class="p-3">Original URL</th>
+            <th class="p-3">Short URL</th>
+            <th class="p-3">Clicks</th>
+            <th class="p-3">Created At</th>
+        </tr>
+    </thead>
+
+    <tbody>
+    {% for url in urls %}
+        <tr class="text-center border-t">
+            
+            <!-- Original URL -->
+            <td class="p-2 break-all">
+                {{ url.original_url }}
+            </td>
+
+            <!-- Short URL -->
+            <td class="p-2 text-blue-600">
+                <a href="/{{ url.short_code }}" target="_blank">
+                    http://127.0.0.1:5000/{{ url.short_code }}
+                </a>
+            </td>
+
+            <!-- Click count -->
+            <td class="p-2 font-semibold">
+                {{ url.clicks }}
+            </td>
+
+            <!-- Created date -->
+            <td class="p-2 text-sm">
+                {{ url.created_at }}
+            </td>
+
+        </tr>
+    {% endfor %}
+    </tbody>
+
+</table>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>URL Shortener</title>
+</head>
+<body>
+
+<h2>Shorten URL</h2>
+
+<form action="/shorten" method="POST">
+    <input type="text" name="url" placeholder="Enter URL" required><br><br>
+
+    <input type="number" name="expiry" placeholder="Expiry (minutes optional)"><br><br>
+
+    <input type="text" name="custom" placeholder="Custom short code (optional)"><br><br>
+
+    <button type="submit">Shorten</button>
+</form>
+
+</body>
+</html>
